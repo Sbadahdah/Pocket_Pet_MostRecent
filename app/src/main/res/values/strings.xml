@@ -1,0 +1,25 @@
+<resources>
+
+    <string name="app_name">Pocket Pet</string>
+    <string name="button_start">Start</string>
+    <string name="button_Info">Info</string>
+    <string name="hunger_text">Hunger:</string>
+    <string name="health_percentage">100%</string>
+    <string name="happiness_text">Happiness:</string>
+    <string name="hap_percentage">100%</string>
+    <string name="home_button_txt_des">Home button</string>
+    <string name="clean_button_txt_des">Clean button</string>
+    <string name="feed_button_txt_des">Feed button</string>
+    <string name="love_buttonfeed_button_txt_des">Love button</string>
+    <string name="play_buttonfeed_button_txt_des">Play button</string>
+    <string name="pet_txt_des">Pet</string>
+    <string name="text_view_info">Info</string>
+    <string name="text_view_back_colors">Background Colors</string>
+    <string name="text_view_app_des">Things to Know</string>
+    <string name="text_view_welcome">Welcome to Pocket Pet!</string>
+    <string name="text_view_about">About Pocket Pet: Pocket Pet, inspired by Studio Ghibli and Tamagotchi, is your virtual pet companion. Hatch your pet, care for it, and share love as you watch it grow.</string>
+    <string name="text_view_caring">Caring for Your Pet: Love, Feed, clean, and play with ease using dedicated buttons. Icons make it simple—the love button has a heart, the food button has food on it, the cleaning button has a broom on it, and the play button has a controller on it.</string>
+    <string name="text_view_moniter">Monitor Your Pet: Keep an eye on your pet\'s health and happiness percentage. If the pet\'s health percentage reaches 0% the pet will die.</string>
+    <string name="text_view_fresh">Fresh Start: If your pet\'s journey ends, we\'ll provide a new egg to begin anew.</string>
+
+</resources>
