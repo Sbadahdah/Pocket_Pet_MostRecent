@@ -1,3 +1,6 @@
+/* Info Activity
+This handles the Info page. This activity is used to go back to the starting page.
+ */
 package edu.ucdenver.pocketpet;
 
 import android.content.Intent;

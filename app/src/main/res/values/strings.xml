@@ -14,7 +14,7 @@
     <string name="play_buttonfeed_button_txt_des">Play button</string>
     <string name="pet_txt_des">Pet</string>
     <string name="text_view_info">Info</string>
-    <string name="text_view_back_colors">Background Colors</string>
+    <string name="text_view_characters">Possible Pets</string>
     <string name="text_view_app_des">Things to Know</string>
     <string name="text_view_welcome">Welcome to Pocket Pet!</string>
     <string name="text_view_about">About Pocket Pet: Pocket Pet, inspired by Studio Ghibli and Tamagotchi, is your virtual pet companion. Hatch your pet, care for it, and share love as you watch it grow.</string>
