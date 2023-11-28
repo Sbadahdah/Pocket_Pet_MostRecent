@@ -29,7 +29,7 @@ import edu.ucdenver.pocketpet.databinding.PetBinding;
 public class PetActivity extends AppCompatActivity {
     private static final int HATCH_DELAY = 10000;
     private static final int DECREASE_DELAY = 15000;
-    private static final int POOP_DELAY = 25000;
+    private static final int POOP_DELAY = 30000;
     private static final String PREFS_NAME = "PetPrefs";
     private static final String HUNGER_KEY = "hunger";
     private static final String HAPPINESS_KEY = "happiness";
