@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.media.MediaPlayer;
 
 import edu.ucdenver.pocketpet.databinding.ActivityMainBinding;
 
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private ImageView eggImageView;
+    private MediaPlayer theme;
+    private MediaPlayer buttonClick;
 
 
 
@@ -30,20 +33,49 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding .inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        buttonClick = MediaPlayer.create(this, R.raw.button_click);
+
+        theme = MediaPlayer.create(this, R.raw.fun_cute_simple_song);
+        theme.setLooping(true); //Looping background music
+        theme.start();
+
         eggImageView = binding.imageViewEgg;
 
         Animation shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake_animation);
         eggImageView.startAnimation(shakeAnimation);
 
     }
-    //Function that calls pet activity
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        theme.start();
+
+    }
+
+    protected  void onPause() {
+        super.onPause();
+        theme.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        theme.stop();
+        theme.release();
+
+    }
+
+        //Function that calls pet activity
     public void onStartClick(View view) {
+        buttonClick.start();
         Intent startIntent = new Intent(this, PetActivity.class);
         startActivity(startIntent);
     }
 
     //Function that calls the setting/info
     public void onInfoClick(View view) {
+        buttonClick.start();
         Intent infoIntent = new Intent(this, InfoActivity.class);
         startActivity(infoIntent);
     }

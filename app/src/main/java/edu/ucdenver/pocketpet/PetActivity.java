@@ -4,6 +4,7 @@ This is where all the things to do with the pet takes place.
 
 package edu.ucdenver.pocketpet;
 
+import android.media.MediaPlayer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,10 +18,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Random;
-
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Random;
 
 import edu.ucdenver.pocketpet.databinding.PetBinding;
 
@@ -29,17 +30,21 @@ import edu.ucdenver.pocketpet.databinding.PetBinding;
 public class PetActivity extends AppCompatActivity {
     private static final int HATCH_DELAY = 10000;
     private static final int DECREASE_DELAY = 15000;
-    private static final int POOP_DELAY = 30000;
+    private static final int POOP_DELAY = 35000;
     private static final String PREFS_NAME = "PetPrefs";
     private static final String HUNGER_KEY = "hunger";
     private static final String HAPPINESS_KEY = "happiness";
     private static final String HATCHED_KEY = "hatched";
     private static final String RANDOM_NUM_KEY = "randomNum";
+    private static final String POOP_KEY = "hasPooped";
+    private MediaPlayer buttonClick;
+    private MediaPlayer petTheme;
     private Random petPicker = new Random();
     private int randomNum;
     private int hunger;
     private int happiness;
     private boolean hatched = false;
+    private boolean hasPooped = false;
     private ImageView petImageView;
     private ImageView emotionImage;
     private ImageView poopImage;
@@ -70,6 +75,10 @@ public class PetActivity extends AppCompatActivity {
         loveButton = binding.LoveButton;
         playButton = binding.PlayButton;
         cleanButton = binding.CleanButton;
+        buttonClick = MediaPlayer.create(this, R.raw.button_click);
+        petTheme = MediaPlayer.create(this, R.raw.pet_theme);
+        petTheme.setLooping(true); //Looping background music
+        petTheme.start();
 
         saveData(); //Restoring saved data
 
@@ -82,11 +91,12 @@ public class PetActivity extends AppCompatActivity {
         poopTimer();
 
 
+
         feedButton.setOnClickListener(new View.OnClickListener() { //Setting up feed button
             @Override
             public void onClick(View view) {
                 increaseHunger();
-
+                buttonClick.start();
                 buttonPressEmotion();
             }
         });
@@ -95,6 +105,7 @@ public class PetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 increaseHappiness(5);
                 buttonPressEmotion();
+                buttonClick.start();
             }
         });
         playButton.setOnClickListener(new View.OnClickListener() { //Setting up play button
@@ -102,17 +113,16 @@ public class PetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 setPlayButton();
                 buttonPressEmotion();
+                buttonClick.start();
             }
         });
         cleanButton.setOnClickListener(new View.OnClickListener() { //Setting up clean button
             @Override
             public void onClick(View view) {
                 cleanPoop();
+                buttonClick.start();
             }
         });
-
-
-
     }
 
     @Override
@@ -125,12 +135,17 @@ public class PetActivity extends AppCompatActivity {
         editor.putInt(HAPPINESS_KEY, happiness); //Saving happiness stat
         editor.putBoolean(HATCHED_KEY, hatched); //Saving hatch status
         editor.putInt(RANDOM_NUM_KEY, randomNum);  //Saving random number to retrieve pet
+        editor.putBoolean(POOP_KEY,hasPooped); //Saving poop state
         editor.apply();
+
+        petTheme.pause();
+
     }
 
     @Override
     protected void onResume() { //Restoring the saved state
         super.onResume();
+        petTheme.start();
         saveData(); //Calling saved data
     }
 
@@ -140,6 +155,7 @@ public class PetActivity extends AppCompatActivity {
         happiness = prefs.getInt(HAPPINESS_KEY, 100); //If not found resetting values
         hatched = prefs.getBoolean(HATCHED_KEY, false); //If not found resetting values
         randomNum = prefs.getInt(RANDOM_NUM_KEY, 1); //If not found resetting values
+        hasPooped = prefs.getBoolean(POOP_KEY, false); //If not found resetting values
 
         setHunger(hunger); //Setting hunger
         setHappiness(happiness); //setting happiness
@@ -156,8 +172,12 @@ public class PetActivity extends AppCompatActivity {
             petImageView.setImageResource(R.drawable.biggeregg);
         }
 
-//        decreaseTimer(); //calling time to periodically decrease stats
-//        poopTimer(); //calling poop timer
+
+        if (hasPooped) {
+            poopImage.setImageResource(R.drawable.poop);
+        }
+
+        updateEmotion();
 
     }
 
@@ -168,7 +188,7 @@ public class PetActivity extends AppCompatActivity {
             @Override
             public void run() {
                 handleHatchTime();
-                Toast.makeText(PetActivity.this, "Your pet has hatched!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PetActivity.this, "Your pet has hatched!", Toast.LENGTH_SHORT).show();
                 petImageView.clearAnimation();
                 petAnimation();
                 //handler.postDelayed(this, HATCH_DELAY);
@@ -176,6 +196,7 @@ public class PetActivity extends AppCompatActivity {
         };
         handler.postDelayed(hatchTask, HATCH_DELAY);
     }
+
     private void handleHatchTime() {
 
         randomNum = petPicker.nextInt(3) + 1;
@@ -189,6 +210,7 @@ public class PetActivity extends AppCompatActivity {
         }
         hatched = true;
     }
+
     private  void petAnimation() {
         Animation funAnimation = AnimationUtils.loadAnimation(this, R.anim.fun_animation);
         petImageView.startAnimation(funAnimation);
@@ -208,6 +230,7 @@ public class PetActivity extends AppCompatActivity {
         };
         handler.postDelayed(decreaseTask, DECREASE_DELAY);
     }
+
     private void handleDecreaseTime() { //What to do when the decrease stats timer is up
         decreaseHunger();
         setHunger(hunger);
@@ -238,7 +261,7 @@ public class PetActivity extends AppCompatActivity {
                     updatePet(R.drawable.bigger_totoro_upset);
                 }
             }
-            Toast.makeText(this, "Your pet is really hungry, you should feed it!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Your pet is really hungry, you should feed it!", Toast.LENGTH_SHORT).show();
         }
         if (happiness <= 50) {
             emotionImage.setImageResource(R.drawable.heart_bubble);
@@ -251,7 +274,7 @@ public class PetActivity extends AppCompatActivity {
                     updatePet(R.drawable.bigger_totoro_upset);
                 }
             }
-            Toast.makeText(this, "Your pet is getting sad, you should play with it!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Your pet is getting sad, you should play with it!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -294,11 +317,8 @@ public class PetActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void setHunger(int hunger) { //Setting hunger
         hungerTextView.setText(String.valueOf(hunger) + "%");
-
     }
 
     private void setHappiness(int happiness){ //Setting happiness
@@ -310,7 +330,7 @@ public class PetActivity extends AppCompatActivity {
 
         if (hunger <= 0) { //handling pets death
             respawn();
-            Toast.makeText(this, "Your pet has died of hunger, but a new egg has spawned! Remember to feed this one.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, R.string.pet_died, Toast.LENGTH_LONG).show();
         }
         setHunger(hunger);
     }
@@ -320,7 +340,7 @@ public class PetActivity extends AppCompatActivity {
 
         if (happiness <= 0) {  //handling pets death
             respawn();
-            Toast.makeText(this, "Your pet has died from lack of happiness, but a new egg has spawned! Remember to love and take care of this one.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, R.string.pet_died, Toast.LENGTH_LONG).show();
         }
         setHappiness(happiness);
     }
@@ -332,7 +352,7 @@ public class PetActivity extends AppCompatActivity {
         }
         if (hunger >= 100) {
             hunger = 100;
-            Toast.makeText(this, "Pet is all full!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Pet is all full!", Toast.LENGTH_SHORT).show();
         }
         setHunger(hunger);
     }
@@ -344,7 +364,7 @@ public class PetActivity extends AppCompatActivity {
         }
         if (happiness >= 100) {
             happiness = 100;
-            Toast.makeText(this, "Pet is at max happiness!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Pet is at max happiness!", Toast.LENGTH_SHORT).show();
         }
         setHappiness(happiness);
     }
@@ -355,7 +375,6 @@ public class PetActivity extends AppCompatActivity {
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.play_animation);
             petImageView.startAnimation(animation);
         }
-
     }
 
     private void poopTimer() { //Poop timer
@@ -370,9 +389,10 @@ public class PetActivity extends AppCompatActivity {
     }
 
     private void poop(){
+        hasPooped = true;
         poopImage.setImageResource(R.drawable.poop);
         decreaseHappiness(10); //decreasing happiness
-        Toast.makeText(this, "Your pet has pooped.", Toast.LENGTH_SHORT).show(); //Letting user know pet has pooped
+//        Toast.makeText(this, "Your pet has pooped.", Toast.LENGTH_SHORT).show(); //Letting user know pet has pooped
 
         //changing pet image to upset
         Drawable currentPet = petImageView.getDrawable();
@@ -389,17 +409,21 @@ public class PetActivity extends AppCompatActivity {
                 updatePet(R.drawable.bigger_totoro_upset);
             }
         }
+
+
     }
 
     private void cleanPoop(){
         Drawable isTherePoop = poopImage.getDrawable();
         if (isTherePoop != null) {
+            hasPooped = false;
             poopImage.setImageDrawable(null); //getting rid of poop image
             increaseHappiness(5); //increasing happiness
             buttonPressEmotion(); //making pet smile
-        } else {
-            Toast.makeText(this, "There is nothing to clean!", Toast.LENGTH_SHORT).show();
+
         }
+
+//        else Toast.makeText(this, R.string.nothing_to_clean, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -425,12 +449,15 @@ public class PetActivity extends AppCompatActivity {
         hatchTimer(); //Starting hatch timer
         hunger = 100; //Resetting hunger
         happiness = 100; //Resetting happiness
+//        Toast.makeText(this, R.string.pet_died, Toast.LENGTH_LONG).show();
     }
 
 
     public void onHomeClick(View view) { //Something to send user back home if home button is pressed
+        buttonClick.start();
         Intent homeIntent = new Intent(this, MainActivity.class);
         startActivity(homeIntent);
+
     }
 
 

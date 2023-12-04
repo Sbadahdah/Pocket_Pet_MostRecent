@@ -17,9 +17,12 @@
     <string name="text_view_characters">Possible Pets</string>
     <string name="text_view_app_des">Things to Know</string>
     <string name="text_view_welcome">Welcome to Pocket Pet!</string>
-    <string name="text_view_about">About Pocket Pet: Pocket Pet, inspired by Studio Ghibli and Tamagotchi, is your virtual pet companion. Hatch your pet, care for it, and share love as you watch it grow.</string>
+    <string name="text_view_about">About Pocket Pet: Pocket Pet, inspired by Studio Ghibli and Tamagotchi, is your virtual pet companion. Hatch your pet, love it, feed it, and care for it.</string>
     <string name="text_view_caring">Caring for Your Pet: Love, Feed, clean, and play with ease using dedicated buttons. Icons make it simple—the love button has a heart, the food button has food on it, the cleaning button has a broom on it, and the play button has a controller on it.</string>
-    <string name="text_view_moniter">Monitor Your Pet: Keep an eye on your pet\'s health and happiness percentage. If the pet\'s health percentage reaches 0% the pet will die.</string>
+    <string name="text_view_moniter">Monitor Your Pet: Keep an eye on your pet\'s hunger and happiness percentage. If the pet\'s hunger or happiness percentage reaches 0% the pet will die.</string>
     <string name="text_view_fresh">Fresh Start: If your pet\'s journey ends, we\'ll provide a new egg to begin anew.</string>
+    <string name="pet_died">Your pet has died, but a new egg has spawned!</string>
+    <string name="nothing_to_clean">There is nothing to clean!</string>
+
 
 </resources>
