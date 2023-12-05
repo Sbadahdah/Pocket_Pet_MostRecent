@@ -1,11 +1,16 @@
 /* Main Activity
 This is what shows when user opens the app. This activity is used to start the game and go to info page.
+
+This activity is what starts when the app opens.
+Start button: This button is programmed to take you to the Pet Activity.
+Info button: This button is programed to take you to the Info Activity.
+Extra Features: There is an animation on the egg to make it shake, for some visual interest on this page.
+
  */
 package edu.ucdenver.pocketpet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;

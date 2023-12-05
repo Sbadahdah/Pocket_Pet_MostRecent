@@ -1,5 +1,9 @@
 /* Info Activity
 This handles the Info page. This activity is used to go back to the starting page.
+
+This activity isn’t too exciting; it is just a place where the user can come to get the basic information about the app. It gives a brief description and shows the user the possible pets they could randomly receive.
+Home button: This button is programmed to take you to back to the Main Activity (The starting screen).
+
  */
 package edu.ucdenver.pocketpet;
 

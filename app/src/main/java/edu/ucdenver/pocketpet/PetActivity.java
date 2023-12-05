@@ -1,5 +1,18 @@
 /* Pet Activity
-This is where all the things to do with the pet takes place.
+This activity is where all the fun stuff happens. Data in this activity is being saved using shared preferences.
+Home button: This button is programmed to take you to back to the Main Activity (The starting screen).
+Heart button: This button is used to give the pet love which increases the Happiness by 5%. It also briefly changes the pet’s facial emotion to happy.
+Food Button: This button is used to feed the pet and it increases the Hunger by 5%. It also briefly changes the pet’s facial emotion to happy.
+Cleaning Button: This button is used clean up the pet’s poop and it increases the Happiness by 5%. It also briefly changes the pet’s facial emotion to happy.
+Play Button: This button causes the pet to do a fun animation and increases the Happiness by 10%. It also briefly changes the pet’s facial emotion to happy.
+
+Egg Timer: This timer goes off after 10 seconds and then simulates the egg “hatching”. Once it goes off the user gets a randomized pet. There is an animation on the egg to make it shake until it “hatches” then the randomized pet spawns in doing a fun bouncing animation.
+Hunger Timer: This timer goes off every 15 seconds and it decreases the pet’s hunger by 10% and will pop up an emotion bubble indicating hunger and changes the pet’s facial emotion to upset.
+Happiness Timer: This timer goes off every 15 seconds and it decreases the pet’s happiness by 2% and will pop up an emotion bubble indicating hunger and changes the pet’s facial emotion to upset.
+Poop Timer: This timer goes off every 35 seconds and it spawns a poop image to simulate the pet pooping. When the pet poops the happiness decrease by 10%. It also shows the user a message telling them the pet has pooped and changes the pet’s facial emotion to upset.
+*All timers for this activity is being managed with Handlers. We made different timers for different things.
+Once Hunger or Happiness reaches 0% the pet will be “dead” and the app is programmed to respawn a new egg and pet for the user. The app will kind of reset in a sense.
+
  */
 
 package edu.ucdenver.pocketpet;
@@ -232,13 +245,15 @@ public class PetActivity extends AppCompatActivity {
     }
 
     private void handleDecreaseTime() { //What to do when the decrease stats timer is up
-        decreaseHunger();
-        setHunger(hunger);
+        if (hatched){
+            decreaseHunger();
+            setHunger(hunger);
 
-        decreaseHappiness(1);
-        setHappiness(happiness);
+            decreaseHappiness(2);
+            setHappiness(happiness);
 
-        updateEmotion();
+            updateEmotion();
+        }
     }
 
     private void updatePet(int imageResource){ //something to set the picture to pet
@@ -371,7 +386,7 @@ public class PetActivity extends AppCompatActivity {
 
     private void setPlayButton(){
         if (hatched) {
-            increaseHappiness(20);
+            increaseHappiness(10);
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.play_animation);
             petImageView.startAnimation(animation);
         }
@@ -445,10 +460,10 @@ public class PetActivity extends AppCompatActivity {
     }
 
     private void respawn() {  //Figure out how to respawn egg when pet dies
-        resetImages();
-        hatchTimer(); //Starting hatch timer
         hunger = 100; //Resetting hunger
         happiness = 100; //Resetting happiness
+        resetImages();
+        hatchTimer(); //Starting hatch timer
 //        Toast.makeText(this, R.string.pet_died, Toast.LENGTH_LONG).show();
     }
 
